@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",  
   "bin": {
-    "sandbox": "bin/sandbox.js"
+    "gendiff": "bin/gendiff.js"
   },
   "scripts": {
     "test": "npx jest"
@@ -15,7 +16,9 @@
   },
   "author": "Vasya",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "commander": "^5.0.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",

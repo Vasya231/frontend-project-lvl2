@@ -25,7 +25,7 @@ const generateText = (diffObj) => {
     },
     [],
   );
-  return ['{', log, '}'];
+  return ['{', ...log, '}'];
 };
 
 

@@ -9,9 +9,9 @@ const main = () => {
     .option('-f, --format [type]', 'output format')
     .arguments('<firstConfig> <secondConfig>')
     .action((firstCon, secondCon) => {
-      const firstConfigPath = path.resolve(process.cwd(), firstCon);
-      const secondConfigPath = path.resolve(process.cwd(), secondCon);
-      console.log(genDiff(firstConfigPath, secondConfigPath));
+      const firstConfigFullPath = path.resolve(process.cwd(), firstCon);
+      const secondConfigFullPath = path.resolve(process.cwd(), secondCon);
+      console.log(genDiff(firstConfigFullPath, secondConfigFullPath));
     });
   program.parse(process.argv);
 };

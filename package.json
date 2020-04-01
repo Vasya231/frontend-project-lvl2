@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",  
+  "type": "module",
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
@@ -17,7 +17,8 @@
   "author": "Vasya",
   "license": "ISC",
   "dependencies": {
-    "commander": "^5.0.0"
+    "commander": "^5.0.0",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",

@@ -4,14 +4,13 @@ install:
 	npm install
 
 start:
-	node bin/sandbox.js
+	node dist/bin/gendiff.js
 
 publish:
 	npm publish --dry-run
 
 build:
-	rm -rf dist
-	npx babel src --out-dir dist --source-maps inline
+	npm run build
 
 lint:
 	npx eslint .

@@ -10,7 +10,9 @@
     "gendiff": "dist/bin/gendiff.js"
   },
   "scripts": {
-    "test": "npx jest"
+    "test": "npx jest",
+    "build": "rm -rf dist && npx babel src --out-dir dist --source-maps inline",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

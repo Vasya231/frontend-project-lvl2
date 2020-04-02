@@ -16,7 +16,6 @@ const jsonExpected1 = {
 const yaml1 = `host: hexlet.io
 timeout: 50
 format: yaml`;
-
 const yamlExpected1 = {
   host: 'hexlet.io',
   timeout: 50,
@@ -29,6 +28,6 @@ test('json', () => {
 });
 
 test('yaml', () => {
-  const parser = getParser('yml');
+  const parser = getParser('yaml');
   expect(parser.parse(yaml1)).toEqual(yamlExpected1);
 });

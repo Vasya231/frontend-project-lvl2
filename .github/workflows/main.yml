@@ -12,14 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-    - name: Install dependecies, build
-      run: |
-        make install
-        make build
+      - name: Install dependecies, build
+        run: |
+          make install
+          make build
 
-    - name: Run linter
-      run: make lint
+      - name: Run linter
+        run: make lint
 
-    - name: Run tests
-      run: make test
+      - name: Run tests
+        run: make test
 

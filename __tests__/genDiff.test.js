@@ -9,9 +9,14 @@ const expected1 = [
   '+ verbose: true',
   /- timeout: 50\n\+ timeout: 20|\+ timeout: 50\n- timeout: 20/,
 ];
+
 const before2 = `${__dirname}/fixtures/before2.json`;
 const after2 = `${__dirname}/fixtures/after2.json`;
 const expected2 = '+ host: hexlet.io';
+
+const beforeYml = `${__dirname}/fixtures/before.yml`;
+const afterYml = `${__dirname}/fixtures/after.yml`;
+const expectedYml = '- timeout: 50';
 
 test('one level', () => {
   const diff1 = genDiff(before1, after1);
@@ -19,4 +24,7 @@ test('one level', () => {
 
   const diff2 = genDiff(before2, after2);
   expect(diff2).toMatch(expected2);
+
+  const diffYml = genDiff(beforeYml, afterYml);
+  expect(diffYml).toMatch(expectedYml);
 });

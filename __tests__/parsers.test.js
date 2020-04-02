@@ -13,7 +13,22 @@ const jsonExpected1 = {
   follow: false,
 };
 
+const yaml1 = `host: hexlet.io
+timeout: 50
+format: yaml`;
+
+const yamlExpected1 = {
+  host: 'hexlet.io',
+  timeout: 50,
+  format: 'yaml',
+};
+
 test('json', () => {
   const parser = getParser('json');
   expect(parser.parse(json1)).toEqual(jsonExpected1);
+});
+
+test('yaml', () => {
+  const parser = getParser('yml');
+  expect(parser.parse(yaml1)).toEqual(yamlExpected1);
 });

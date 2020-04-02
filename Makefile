@@ -1,7 +1,7 @@
 all: install
 
 install: 
-	npm install
+	npm ci
 
 start:
 	node dist/bin/gendiff.js

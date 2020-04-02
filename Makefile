@@ -10,10 +10,17 @@ publish:
 	npm publish --dry-run
 
 build:
-  npx babel src --out-dir dist
+	rm -rf dist
+	npx babel src --out-dir dist --source-maps inline
 
 lint:
 	npx eslint .
 
 lintfix:
 	npx eslint . --fix
+
+test:
+	npm test
+
+coverage:
+	npm test --coverage

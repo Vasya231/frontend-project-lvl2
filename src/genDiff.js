@@ -40,9 +40,11 @@ const getFormat = (pathToFile) => {
 
 
 const genDiff = (pathToFile1, pathToFile2) => {
-  const fileData1 = fs.readFileSync(pathToFile1, 'utf8');
-  const fileData2 = fs.readFileSync(pathToFile2, 'utf8');
-  const { parse } = getParser(getFormat(pathToFile1));
+  const firstConfigFullPath = path.resolve(process.cwd(), pathToFile1);
+  const secondConfigFullPath = path.resolve(process.cwd(), pathToFile2);
+  const fileData1 = fs.readFileSync(firstConfigFullPath, 'utf8');
+  const fileData2 = fs.readFileSync(secondConfigFullPath, 'utf8');
+  const { parse } = getParser(getFormat(firstConfigFullPath));
   const objBefore = parse(fileData1);
   const objAfter = parse(fileData2);
   const diffObj = generateDiffList(objBefore, objAfter);

@@ -15,10 +15,15 @@ const beforeYml = pathToFixture('before.yml');
 const afterYml = pathToFixture('after.yml');
 const expectedYml = pathToFixture('resultYml.txt');
 
+const beforeJson = pathToFixture('before.json');
+const afterJson = pathToFixture('after.json');
+const expectedJson = pathToFixture('resultJson.txt');
+
 test.each([
   ['test flat', beforeFlat, afterFlat, expectedFlat],
   ['test empty', beforeEmpty, afterEmpty, expectedEmpty],
   ['test yml', beforeYml, afterYml, expectedYml],
+  ['test json', beforeJson, afterJson, expectedJson],
 ])('%s', (testname, before, after, expected) => {
   const expectedData = fs.readFileSync(expected, 'utf8');
   expect(genDiff(before, after)).toEqual(expectedData);

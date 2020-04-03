@@ -34,6 +34,7 @@ const getFormat = (pathToFile) => {
   const extName = path.extname(pathToFile);
   if (extName === '.json') return 'json';
   if (extName === '.yml') return 'yaml';
+  if (extName === '.ini') return 'ini';
   return null;
 };
 
@@ -41,10 +42,10 @@ const getFormat = (pathToFile) => {
 const genDiff = (pathToFile1, pathToFile2) => {
   const fileData1 = fs.readFileSync(pathToFile1, 'utf8');
   const fileData2 = fs.readFileSync(pathToFile2, 'utf8');
-  const parser = getParser(getFormat(pathToFile1));
-  const obj1 = parser.parse(fileData1);
-  const obj2 = parser.parse(fileData2);
-  const diffObj = generateDiffList(obj1, obj2);
+  const { parse } = getParser(getFormat(pathToFile1));
+  const objBefore = parse(fileData1);
+  const objAfter = parse(fileData2);
+  const diffObj = generateDiffList(objBefore, objAfter);
   const diffText = generateText(diffObj);
   return diffText.join('\n');
 };

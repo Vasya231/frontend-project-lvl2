@@ -1,30 +1,25 @@
+import * as fs from 'fs';
 import genDiff from '../src/genDiff.js';
 
-const before1 = `${__dirname}/fixtures/before1.json`;
-const after1 = `${__dirname}/fixtures/after1.json`;
-const expected1 = [
-  '  host: hexlet.io',
-  '- proxy: 123.234.53.22',
-  '- follow: false',
-  '+ verbose: true',
-  /- timeout: 50\n\+ timeout: 20|\+ timeout: 50\n- timeout: 20/,
-];
+const pathToFixture = (filename) => `${__dirname}/fixtures/${filename}`;
 
-const before2 = `${__dirname}/fixtures/before2.json`;
-const after2 = `${__dirname}/fixtures/after2.json`;
-const expected2 = '+ host: hexlet.io';
+const beforeFlat = pathToFixture('beforeFlat.json');
+const afterFlat = pathToFixture('afterFlat.json');
+const expectedFlat = pathToFixture('resultFlat.txt');
 
-const beforeYml = `${__dirname}/fixtures/before.yml`;
-const afterYml = `${__dirname}/fixtures/after.yml`;
-const expectedYml = '- timeout: 50';
+const beforeEmpty = pathToFixture('beforeEmpty.json');
+const afterEmpty = pathToFixture('afterEmpty.json');
+const expectedEmpty = pathToFixture('resultEmpty.txt');
 
-test('one level', () => {
-  const diff1 = genDiff(before1, after1);
-  expected1.forEach((str) => expect(diff1).toMatch(str));
+const beforeYml = pathToFixture('before.yml');
+const afterYml = pathToFixture('after.yml');
+const expectedYml = pathToFixture('resultYml.txt');
 
-  const diff2 = genDiff(before2, after2);
-  expect(diff2).toMatch(expected2);
-
-  const diffYml = genDiff(beforeYml, afterYml);
-  expect(diffYml).toMatch(expectedYml);
+test.each([
+  ['test flat', beforeFlat, afterFlat, expectedFlat],
+  ['test empty', beforeEmpty, afterEmpty, expectedEmpty],
+  ['test yml', beforeYml, afterYml, expectedYml],
+])('%s', (testname, before, after, expected) => {
+  const expectedData = fs.readFileSync(expected, 'utf8');
+  expect(genDiff(before, after)).toEqual(expectedData);
 });

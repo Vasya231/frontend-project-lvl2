@@ -1,18 +1,18 @@
 import _ from 'lodash';
 
-function simpleRender(offset) {
-  return [`${' '.repeat(offset)}${this.prefix}${this.name}: ${this.value}`];
+function simpleRender(currentOffset) {
+  return [`${' '.repeat(currentOffset)}${this.prefix}${this.name}: ${this.value}`];
 }
 
-function objectRender(offset) {
-  const offsetStr = ' '.repeat(offset);
+function objectRender(currentOffset, offsetInc) {
+  const offsetStr = ' '.repeat(currentOffset);
   const openingStr = this.name ? `${this.prefix}${this.name}: {` : '{';
-  const endingStr = '}';
+  const endingStr = offsetStr.concat('  }');
   const midStrs = this.children.reduce(
-    (acc, childNode) => [...acc, ...childNode.render(offset + 2)],
+    (acc, childNode) => [...acc, ...childNode.render(currentOffset + offsetInc, offsetInc)],
     [],
   );
-  return [offsetStr.concat(openingStr), ...midStrs, offsetStr.concat(endingStr)];
+  return [offsetStr.concat(openingStr), ...midStrs, endingStr];
 }
 
 const createSimpleNode = (name, prefix, value) => ({

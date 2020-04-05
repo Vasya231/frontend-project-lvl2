@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import path from 'path';
-import getParser from './parsers.js';
+import parse from './parsers.js';
 import createNode from './nodes';
 
 const generateDiffList = (objBefore, objAfter) => createNode('', objBefore, objAfter);
@@ -22,9 +22,8 @@ const genDiff = (pathToFile1, pathToFile2) => {
   const secondConfigFullPath = path.resolve(process.cwd(), pathToFile2);
   const fileData1 = fs.readFileSync(firstConfigFullPath, 'utf8');
   const fileData2 = fs.readFileSync(secondConfigFullPath, 'utf8');
-  const { parse } = getParser(getFormat(firstConfigFullPath));
-  const objBefore = parse(fileData1);
-  const objAfter = parse(fileData2);
+  const objBefore = parse(getFormat(firstConfigFullPath), fileData1);
+  const objAfter = parse(getFormat(secondConfigFullPath), fileData2);
   const diffObj = generateDiffList(objBefore, objAfter);
   const diffText = render(diffObj);
   return diffText.join('\n');

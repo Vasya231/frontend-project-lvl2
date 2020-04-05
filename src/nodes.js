@@ -1,15 +1,15 @@
 import _ from 'lodash';
 
-function simpleRender(currentOffset) {
-  return [`${' '.repeat(currentOffset)}${this.type}${this.name}: ${this.value}`];
+function simpleRender(currentPosition) {
+  return [`${' '.repeat(currentPosition)}${this.type}${this.name}: ${this.value}`];
 }
 
-function objectRender(currentOffset, offsetInc) {
-  const offsetStr = ' '.repeat(currentOffset > 0 ? currentOffset : 0);
+function objectRender(currentPosition, offsetInc) {
+  const offsetStr = ' '.repeat(currentPosition > 0 ? currentPosition : 0);
   const openingStr = this.name ? `${this.type}${this.name}: {` : '{';
   const endingStr = (this.name !== '') ? offsetStr.concat('  }') : '}';
   const midStrs = this.children.reduce(
-    (acc, childNode) => [...acc, ...childNode.render(currentOffset + offsetInc, offsetInc)],
+    (acc, childNode) => [...acc, ...childNode.render(currentPosition + offsetInc, offsetInc)],
     [],
   );
   return [offsetStr.concat(openingStr), ...midStrs, endingStr];

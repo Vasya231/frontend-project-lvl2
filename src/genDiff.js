@@ -3,7 +3,7 @@ import path from 'path';
 import getParser from './parsers.js';
 import createNode from './nodes';
 
-const generateDiffList = (objBefore, objAfter) => createNode('', '', objBefore, objAfter);
+const generateDiffList = (objBefore, objAfter) => createNode('', objBefore, objAfter);
 
 
 const render = (diffObj) => diffObj.render(0, 4);

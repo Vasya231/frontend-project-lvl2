@@ -1,12 +1,12 @@
 import _ from 'lodash';
 
 function simpleRender(currentOffset) {
-  return [`${' '.repeat(currentOffset)}${this.prefix}${this.name}: ${this.value}`];
+  return [`${' '.repeat(currentOffset)}${this.type}${this.name}: ${this.value}`];
 }
 
 function objectRender(currentOffset, offsetInc) {
   const offsetStr = ' '.repeat(currentOffset);
-  const openingStr = this.name ? `${this.prefix}${this.name}: {` : '{';
+  const openingStr = this.name ? `${this.type}${this.name}: {` : '{';
   const endingStr = offsetStr.concat('  }');
   const midStrs = this.children.reduce(
     (acc, childNode) => [...acc, ...childNode.render(currentOffset + offsetInc, offsetInc)],
@@ -15,9 +15,9 @@ function objectRender(currentOffset, offsetInc) {
   return [offsetStr.concat(openingStr), ...midStrs, endingStr];
 }
 
-const createSimpleNode = (name, prefix, value) => ({
+const createSimpleNode = (name, type, value) => ({
   name,
-  prefix,
+  type,
   value,
   render: simpleRender,
 });
@@ -26,43 +26,59 @@ const isObject = (value) => (
   ((value instanceof Object) && !(value instanceof Array))
 );
 
-const createObjectNode = (name, prefix, objBefore, objAfter) => {
+const createSingleSourceNode = (name, type, value) => {
+  if (!isObject(value)) {
+    return createSimpleNode(name, type, value);
+  }
+  const entries = Object.entries(value);
+  const children = entries.reduce(
+    (acc, [key, val]) => [...acc, (isObject(val) ? createSingleSourceNode(key, ' ', val)
+      : createSimpleNode(key, ' ', val))],
+    [],
+  );
+  return {
+    name,
+    type,
+    children,
+    render: objectRender,
+  };
+};
+
+const createDiffNodes = (name, valueBefore, valueAfter) => {
+  const branchBefore = (valueBefore !== undefined) ? createSingleSourceNode(name, '- ', valueBefore) : [];
+  const branchAfter = (valueAfter !== undefined) ? createSingleSourceNode(name, '+ ', valueAfter) : [];
+  return _.flatten([branchBefore, branchAfter]);
+};
+
+const createDualSourceNode = (name, objBefore, objAfter) => {
   const keysBefore = Object.keys(objBefore);
   const keysAfter = Object.keys(objAfter);
   const allKeys = _.union(keysBefore, keysAfter);
   const children = allKeys.reduce(
     (acc, key) => {
-      const valueBefore = _.get(objBefore, key);
-      const valueAfter = _.get(objAfter, key);
-      if (!isObject(valueBefore) && (valueBefore === valueAfter)) {
-        return [...acc, createSimpleNode(key, '  ', valueBefore)];
-      }
-      if (!isObject(valueBefore) && (valueBefore !== undefined)) {
-        acc.push(createSimpleNode(key, '- ', valueBefore));
-      }
-      if (isObject(valueBefore) && !isObject(valueAfter)) {
-        acc.push(createObjectNode(key, '  ', valueBefore, {}));
-      }
+      const valueBefore = objBefore[key];
+      const valueAfter = objAfter[key];
+      // console.log(`analyzing ${key}:`, valueBefore, valueAfter);
       if (isObject(valueBefore) && isObject(valueAfter)) {
-        return [...acc, createObjectNode(key, '  ', valueBefore, valueAfter)];
+        // console.log('Both objects, proceeding with dual source');
+        return [...acc, createDualSourceNode(key, valueBefore, valueAfter)];
       }
-      if (!isObject(valueAfter) && (valueAfter !== undefined)) {
-        return [...acc, createSimpleNode(key, '+ ', valueAfter)];
+      if (valueBefore === valueAfter) {
+        // console.log('values equal, creating single source')
+        return [...acc, createSingleSourceNode(key, '  ', valueBefore)];
       }
-      if (isObject(valueAfter)) {
-        return [...acc, createObjectNode(key, '+ ', {}, valueAfter)];
-      }
-      return acc;
+      // console.log('creating diffs');
+      return [...acc, ...createDiffNodes(key, valueBefore, valueAfter)];
     },
     [],
   );
   return {
     name,
-    prefix,
+    type: '  ',
     children,
     render: objectRender,
   };
 };
 
 
-export default createObjectNode;
+export default createDualSourceNode;

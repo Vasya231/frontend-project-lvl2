@@ -5,9 +5,9 @@ function simpleRender(currentOffset) {
 }
 
 function objectRender(currentOffset, offsetInc) {
-  const offsetStr = ' '.repeat(currentOffset);
+  const offsetStr = ' '.repeat(currentOffset > 0 ? currentOffset : 0);
   const openingStr = this.name ? `${this.type}${this.name}: {` : '{';
-  const endingStr = offsetStr.concat('  }');
+  const endingStr = (this.name !== '') ? offsetStr.concat('  }') : '}';
   const midStrs = this.children.reduce(
     (acc, childNode) => [...acc, ...childNode.render(currentOffset + offsetInc, offsetInc)],
     [],
@@ -32,8 +32,8 @@ const createSingleSourceNode = (name, type, value) => {
   }
   const entries = Object.entries(value);
   const children = entries.reduce(
-    (acc, [key, val]) => [...acc, (isObject(val) ? createSingleSourceNode(key, ' ', val)
-      : createSimpleNode(key, ' ', val))],
+    (acc, [key, val]) => [...acc, (isObject(val) ? createSingleSourceNode(key, '  ', val)
+      : createSimpleNode(key, '  ', val))],
     [],
   );
   return {

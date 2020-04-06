@@ -27,7 +27,7 @@ const customIniParse = (data) => {
       if (_.isString(value)) {
         return formatStrValue(value);
       }
-      return (_.isPlainObject(value) ? transform(value) : value);
+      return (_.isArrayLikeObject(value) ? transform(value) : value);
     },
   );
   return transform(parsedData);
@@ -35,7 +35,7 @@ const customIniParse = (data) => {
 
 const parsers = {
   json: JSON.parse,
-  yaml: yaml.safeLoad,
+  yaml: (data) => yaml.safeLoad(data) || {},
   ini: customIniParse,
 };
 

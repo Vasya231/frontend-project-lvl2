@@ -3,4 +3,7 @@
 
 Примеры использования:
 
-Плоский json:[![asciicast](https://asciinema.org/a/U2SqraXyDvLdtfsbCciEoOOj0.svg)](https://asciinema.org/a/U2SqraXyDvLdtfsbCciEoOOj0)
+Плоский json:
+[![asciicast](https://asciinema.org/a/U2SqraXyDvLdtfsbCciEoOOj0.svg)](https://asciinema.org/a/U2SqraXyDvLdtfsbCciEoOOj0)
+
+

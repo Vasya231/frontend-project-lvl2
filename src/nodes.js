@@ -1,14 +1,14 @@
 import _ from 'lodash';
 
+const isObject = (value) => (
+  ((value instanceof Object) && !(value instanceof Array))
+);
+
 const createSimpleNode = (name, type, value) => ({
   name,
   type,
   value,
 });
-
-const isObject = (value) => (
-  ((value instanceof Object) && !(value instanceof Array))
-);
 
 const createSingleSourceNode = (name, type, value) => {
   if (!isObject(value)) {

@@ -6,9 +6,6 @@ import render from './render';
 
 const generateDiffList = (objBefore, objAfter) => createNode('', objBefore, objAfter);
 
-
-// const render = (diffObj) => diffObj.render(-2);
-
 const getFormat = (pathToFile) => {
   const extName = path.extname(pathToFile);
   if (extName === '.json') return 'json';

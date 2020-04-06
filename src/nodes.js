@@ -1,25 +1,9 @@
 import _ from 'lodash';
 
-function simpleRender(currentPosition) {
-  return [`${' '.repeat(currentPosition)}${this.type}${this.name}: ${this.value}`];
-}
-
-function objectRender(currentPosition, offsetInc = 4) {
-  const offsetStr = ' '.repeat(currentPosition > 0 ? currentPosition : 0);
-  const openingStr = this.name ? `${this.type}${this.name}: {` : '{';
-  const endingStr = (this.name !== '') ? offsetStr.concat('  }') : '}';
-  const midStrs = this.children.reduce(
-    (acc, childNode) => [...acc, ...childNode.render(currentPosition + offsetInc, offsetInc)],
-    [],
-  );
-  return [offsetStr.concat(openingStr), ...midStrs, endingStr];
-}
-
 const createSimpleNode = (name, type, value) => ({
   name,
   type,
   value,
-  render: simpleRender,
 });
 
 const isObject = (value) => (
@@ -40,7 +24,6 @@ const createSingleSourceNode = (name, type, value) => {
     name,
     type,
     children,
-    render: objectRender,
   };
 };
 
@@ -58,16 +41,12 @@ const createDualSourceNode = (name, objBefore, objAfter) => {
     (acc, key) => {
       const valueBefore = objBefore[key];
       const valueAfter = objAfter[key];
-      // console.log(`analyzing ${key}:`, valueBefore, valueAfter);
       if (isObject(valueBefore) && isObject(valueAfter)) {
-        // console.log('Both objects, proceeding with dual source');
         return [...acc, createDualSourceNode(key, valueBefore, valueAfter)];
       }
       if (valueBefore === valueAfter) {
-        // console.log('values equal, creating single source')
         return [...acc, createSingleSourceNode(key, 'regular', valueBefore)];
       }
-      // console.log('creating diffs');
       return [...acc, ...createDiffNodes(key, valueBefore, valueAfter)];
     },
     [],
@@ -76,7 +55,6 @@ const createDualSourceNode = (name, objBefore, objAfter) => {
     name,
     type: 'regular',
     children,
-    render: objectRender,
   };
 };
 

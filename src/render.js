@@ -10,7 +10,6 @@ const render = (diffObj, currentPos, offsetInc = 4) => {
   const {
     name, children, value, type,
   } = diffObj;
-  // console.log('rendering node:', name, '\n', children);
   const offsetStr = ' '.repeat(currentPos > 0 ? currentPos : 0);
   const prefix = getPrefix(type);
   const nameStr = name ? `${offsetStr}${prefix}${name}: ` : '';

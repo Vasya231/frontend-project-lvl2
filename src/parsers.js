@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
-import parser from 'ini-parser';
 import _ from 'lodash';
+import ini from 'ini';
 
 const formatStrValue = (str) => {
   const strWithoutComment = str.split(';')[0];
@@ -20,7 +20,7 @@ const formatStrValue = (str) => {
 };
 
 const customIniParse = (data) => {
-  const parsedData = parser.parse(data);
+  const parsedData = ini.parse(data);
   const transform = (obj) => _.mapValues(
     obj,
     (value) => {

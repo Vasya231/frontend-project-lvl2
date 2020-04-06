@@ -26,7 +26,7 @@ const genDiff = (pathToFile1, pathToFile2) => {
   const objBefore = parse(getFormat(firstConfigFullPath), fileData1);
   const objAfter = parse(getFormat(secondConfigFullPath), fileData2);
   const diffObj = generateDiffList(objBefore, objAfter);
-  const diffText = render(diffObj, 0);
+  const diffText = render(diffObj, -2);
   return diffText;
 };
 

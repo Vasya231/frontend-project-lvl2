@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const prefixes = {
   added: '+ ',
   deleted: '- ',
@@ -10,6 +12,12 @@ const render = (diffObj, currentPos, offsetInc = 4) => {
   const {
     name, children, value, type,
   } = diffObj;
+  if (type === 'diff') {
+    const { before: nodeBefore, after: nodeAfter } = diffObj;
+    const strBefore = nodeBefore ? render(nodeBefore, currentPos, offsetInc) : [];
+    const strAfter = nodeAfter ? render(nodeAfter, currentPos, offsetInc) : [];
+    return _.flatten([strBefore, strAfter]).join('\n');
+  }
   const offsetStr = ' '.repeat(currentPos > 0 ? currentPos : 0);
   const prefix = getPrefix(type);
   const nameStr = name ? `${offsetStr}${prefix}${name}: ` : '';

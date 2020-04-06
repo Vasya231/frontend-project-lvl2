@@ -27,10 +27,15 @@ const createSingleSourceNode = (name, type, value) => {
   };
 };
 
-const createDiffNodes = (name, valueBefore, valueAfter) => {
-  const branchBefore = (valueBefore !== undefined) ? createSingleSourceNode(name, 'deleted', valueBefore) : [];
-  const branchAfter = (valueAfter !== undefined) ? createSingleSourceNode(name, 'added', valueAfter) : [];
-  return _.flatten([branchBefore, branchAfter]);
+const createDiffNode = (name, valueBefore, valueAfter) => {
+  const branchBefore = (valueBefore !== undefined) ? createSingleSourceNode(name, 'deleted', valueBefore) : null;
+  const branchAfter = (valueAfter !== undefined) ? createSingleSourceNode(name, 'added', valueAfter) : null;
+  return {
+    name,
+    type: 'diff',
+    before: branchBefore,
+    after: branchAfter,
+  };
 };
 
 const createDualSourceNode = (name, objBefore, objAfter) => {
@@ -47,7 +52,7 @@ const createDualSourceNode = (name, objBefore, objAfter) => {
       if (valueBefore === valueAfter) {
         return [...acc, createSingleSourceNode(key, 'regular', valueBefore)];
       }
-      return [...acc, ...createDiffNodes(key, valueBefore, valueAfter)];
+      return [...acc, createDiffNode(key, valueBefore, valueAfter)];
     },
     [],
   );

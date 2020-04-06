@@ -1,12 +1,13 @@
 import * as fs from 'fs';
 import path from 'path';
-import parse from './parsers.js';
+import parse from './parsers';
 import createNode from './nodes';
+import render from './render';
 
 const generateDiffList = (objBefore, objAfter) => createNode('', objBefore, objAfter);
 
 
-const render = (diffObj) => diffObj.render(-2, 4);
+// const render = (diffObj) => diffObj.render(-2);
 
 const getFormat = (pathToFile) => {
   const extName = path.extname(pathToFile);
@@ -25,8 +26,8 @@ const genDiff = (pathToFile1, pathToFile2) => {
   const objBefore = parse(getFormat(firstConfigFullPath), fileData1);
   const objAfter = parse(getFormat(secondConfigFullPath), fileData2);
   const diffObj = generateDiffList(objBefore, objAfter);
-  const diffText = render(diffObj);
-  return diffText.join('\n');
+  const diffText = render(diffObj, 0);
+  return diffText;
 };
 
 export default genDiff;

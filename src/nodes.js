@@ -4,7 +4,7 @@ function simpleRender(currentPosition) {
   return [`${' '.repeat(currentPosition)}${this.type}${this.name}: ${this.value}`];
 }
 
-function objectRender(currentPosition, offsetInc) {
+function objectRender(currentPosition, offsetInc = 4) {
   const offsetStr = ' '.repeat(currentPosition > 0 ? currentPosition : 0);
   const openingStr = this.name ? `${this.type}${this.name}: {` : '{';
   const endingStr = (this.name !== '') ? offsetStr.concat('  }') : '}';
@@ -32,8 +32,8 @@ const createSingleSourceNode = (name, type, value) => {
   }
   const entries = Object.entries(value);
   const children = entries.reduce(
-    (acc, [key, val]) => [...acc, (isObject(val) ? createSingleSourceNode(key, '  ', val)
-      : createSimpleNode(key, '  ', val))],
+    (acc, [key, val]) => [...acc, (isObject(val) ? createSingleSourceNode(key, 'regular', val)
+      : createSimpleNode(key, 'regular', val))],
     [],
   );
   return {
@@ -45,8 +45,8 @@ const createSingleSourceNode = (name, type, value) => {
 };
 
 const createDiffNodes = (name, valueBefore, valueAfter) => {
-  const branchBefore = (valueBefore !== undefined) ? createSingleSourceNode(name, '- ', valueBefore) : [];
-  const branchAfter = (valueAfter !== undefined) ? createSingleSourceNode(name, '+ ', valueAfter) : [];
+  const branchBefore = (valueBefore !== undefined) ? createSingleSourceNode(name, 'deleted', valueBefore) : [];
+  const branchAfter = (valueAfter !== undefined) ? createSingleSourceNode(name, 'added', valueAfter) : [];
   return _.flatten([branchBefore, branchAfter]);
 };
 
@@ -65,7 +65,7 @@ const createDualSourceNode = (name, objBefore, objAfter) => {
       }
       if (valueBefore === valueAfter) {
         // console.log('values equal, creating single source')
-        return [...acc, createSingleSourceNode(key, '  ', valueBefore)];
+        return [...acc, createSingleSourceNode(key, 'regular', valueBefore)];
       }
       // console.log('creating diffs');
       return [...acc, ...createDiffNodes(key, valueBefore, valueAfter)];
@@ -74,7 +74,7 @@ const createDualSourceNode = (name, objBefore, objAfter) => {
   );
   return {
     name,
-    type: '  ',
+    type: 'regular',
     children,
     render: objectRender,
   };

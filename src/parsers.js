@@ -1,8 +1,7 @@
 import yaml from 'js-yaml';
-import _ from 'lodash';
 import ini from 'ini';
 
-const formatStrValue = (str) => {
+/* const formatStrValue = (str) => {
   const strWithoutComment = str.split(';')[0];
   if (Number.isNaN(Number(strWithoutComment))) {
     return strWithoutComment;
@@ -31,12 +30,12 @@ const customIniParse = (data) => {
     },
   );
   return transform(parsedData);
-};
+}; */
 
 const parsers = {
   json: JSON.parse,
   yaml: (data) => yaml.safeLoad(data) || {},
-  ini: customIniParse,
+  ini: ini.parse,
 };
 
 export default (format, data) => (parsers[format](data));

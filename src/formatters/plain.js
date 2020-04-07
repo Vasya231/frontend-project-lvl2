@@ -15,7 +15,7 @@ const render = (node, path = '') => {
     if (!added) {
       return [`Property '${path}${name}' was deleted`];
     }
-    
+
     return [`Property '${path}${name}' was changed from ${deletedValueText} to ${addedValueText}`];
   }
   if (children) {

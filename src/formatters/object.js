@@ -13,7 +13,7 @@ const render = (diffObj, currentPos, offsetInc = 4) => {
     name, children, value, type,
   } = diffObj;
   if (type === 'diff') {
-    const { before: nodeBefore, after: nodeAfter } = diffObj;
+    const { deleted: nodeBefore, added: nodeAfter } = diffObj;
     const strBefore = nodeBefore ? render(nodeBefore, currentPos, offsetInc) : [];
     const strAfter = nodeAfter ? render(nodeAfter, currentPos, offsetInc) : [];
     return _.flatten([strBefore, strAfter]).join('\n');

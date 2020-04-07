@@ -29,8 +29,8 @@ const createDiffNode = (name, valueBefore, valueAfter) => {
   return {
     name,
     type: 'diff',
-    before: branchBefore,
-    after: branchAfter,
+    deleted: branchBefore,
+    added: branchAfter,
   };
 };
 

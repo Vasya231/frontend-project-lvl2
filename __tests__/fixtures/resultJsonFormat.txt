@@ -14,7 +14,7 @@
         {
           "name": "setting2",
           "type": "diff",
-          "before": {
+          "deleted": {
             "name": "setting2",
             "type": "deleted",
             "value": 200
@@ -23,12 +23,12 @@
         {
           "name": "setting3",
           "type": "diff",
-          "before": {
+          "deleted": {
             "name": "setting3",
             "type": "deleted",
             "value": true
           },
-          "after": {
+          "added": {
             "name": "setting3",
             "type": "added",
             "children": [
@@ -52,7 +52,7 @@
             {
               "name": "ops",
               "type": "diff",
-              "after": {
+              "added": {
                 "name": "ops",
                 "type": "added",
                 "value": "vops"
@@ -63,7 +63,7 @@
         {
           "name": "follow",
           "type": "diff",
-          "after": {
+          "added": {
             "name": "follow",
             "type": "added",
             "value": false
@@ -72,7 +72,7 @@
         {
           "name": "setting4",
           "type": "diff",
-          "after": {
+          "added": {
             "name": "setting4",
             "type": "added",
             "value": "blah blah"
@@ -81,7 +81,7 @@
         {
           "name": "setting5",
           "type": "diff",
-          "after": {
+          "added": {
             "name": "setting5",
             "type": "added",
             "children": [
@@ -102,12 +102,12 @@
         {
           "name": "baz",
           "type": "diff",
-          "before": {
+          "deleted": {
             "name": "baz",
             "type": "deleted",
             "value": "bas"
           },
-          "after": {
+          "added": {
             "name": "baz",
             "type": "added",
             "value": "bars"
@@ -121,7 +121,7 @@
         {
           "name": "nest",
           "type": "diff",
-          "before": {
+          "deleted": {
             "name": "nest",
             "type": "deleted",
             "children": [
@@ -132,7 +132,7 @@
               }
             ]
           },
-          "after": {
+          "added": {
             "name": "nest",
             "type": "added",
             "value": "str"
@@ -143,7 +143,7 @@
     {
       "name": "group2",
       "type": "diff",
-      "before": {
+      "deleted": {
         "name": "group2",
         "type": "deleted",
         "children": [
@@ -158,7 +158,7 @@
     {
       "name": "group3",
       "type": "diff",
-      "after": {
+      "added": {
         "name": "group3",
         "type": "added",
         "children": [

@@ -19,3 +19,6 @@
 
 JSON:
 [![asciicast](https://asciinema.org/a/8sNlB1ppumotz26Y1uXiMNGgW.svg)](https://asciinema.org/a/8sNlB1ppumotz26Y1uXiMNGgW)
+
+Plain формат:
+[![asciicast](https://asciinema.org/a/PSRWsLI8KONsD9f3CBdeAI1FV.svg)](https://asciinema.org/a/PSRWsLI8KONsD9f3CBdeAI1FV)

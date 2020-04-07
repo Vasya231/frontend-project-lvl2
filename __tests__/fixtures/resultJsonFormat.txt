@@ -14,30 +14,14 @@
         {
           "name": "setting2",
           "type": "diff",
-          "deleted": {
-            "name": "setting2",
-            "type": "deleted",
-            "value": 200
-          }
+          "deleted": 200
         },
         {
           "name": "setting3",
           "type": "diff",
-          "deleted": {
-            "name": "setting3",
-            "type": "deleted",
-            "value": true
-          },
+          "deleted": true,
           "added": {
-            "name": "setting3",
-            "type": "added",
-            "children": [
-              {
-                "name": "key",
-                "type": "regular",
-                "value": "value"
-              }
-            ]
+            "key": "value"
           }
         },
         {
@@ -52,45 +36,25 @@
             {
               "name": "ops",
               "type": "diff",
-              "added": {
-                "name": "ops",
-                "type": "added",
-                "value": "vops"
-              }
+              "added": "vops"
             }
           ]
         },
         {
           "name": "follow",
           "type": "diff",
-          "added": {
-            "name": "follow",
-            "type": "added",
-            "value": false
-          }
+          "added": false
         },
         {
           "name": "setting4",
           "type": "diff",
-          "added": {
-            "name": "setting4",
-            "type": "added",
-            "value": "blah blah"
-          }
+          "added": "blah blah"
         },
         {
           "name": "setting5",
           "type": "diff",
           "added": {
-            "name": "setting5",
-            "type": "added",
-            "children": [
-              {
-                "name": "key5",
-                "type": "regular",
-                "value": "value5"
-              }
-            ]
+            "key5": "value5"
           }
         }
       ]
@@ -102,16 +66,8 @@
         {
           "name": "baz",
           "type": "diff",
-          "deleted": {
-            "name": "baz",
-            "type": "deleted",
-            "value": "bas"
-          },
-          "added": {
-            "name": "baz",
-            "type": "added",
-            "value": "bars"
-          }
+          "deleted": "bas",
+          "added": "bars"
         },
         {
           "name": "foo",
@@ -122,21 +78,9 @@
           "name": "nest",
           "type": "diff",
           "deleted": {
-            "name": "nest",
-            "type": "deleted",
-            "children": [
-              {
-                "name": "key",
-                "type": "regular",
-                "value": "value"
-              }
-            ]
+            "key": "value"
           },
-          "added": {
-            "name": "nest",
-            "type": "added",
-            "value": "str"
-          }
+          "added": "str"
         }
       ]
     },
@@ -144,30 +88,14 @@
       "name": "group2",
       "type": "diff",
       "deleted": {
-        "name": "group2",
-        "type": "deleted",
-        "children": [
-          {
-            "name": "abc",
-            "type": "regular",
-            "value": 12345
-          }
-        ]
+        "abc": 12345
       }
     },
     {
       "name": "group3",
       "type": "diff",
       "added": {
-        "name": "group3",
-        "type": "added",
-        "children": [
-          {
-            "name": "fee",
-            "type": "regular",
-            "value": 100500
-          }
-        ]
+        "fee": 100500
       }
     }
   ]

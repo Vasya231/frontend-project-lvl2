@@ -1,9 +1,5 @@
 import _ from 'lodash';
 
-const isObject = (value) => (
-  ((value instanceof Object) && !(value instanceof Array))
-);
-
 const createSimpleNode = (name, type, value) => ({
   name,
   type,
@@ -11,12 +7,12 @@ const createSimpleNode = (name, type, value) => ({
 });
 
 const createSingleSourceNode = (name, type, value) => {
-  if (!isObject(value)) {
+  if (!_.isPlainObject(value)) {
     return createSimpleNode(name, type, value);
   }
   const entries = Object.entries(value);
   const children = entries.reduce(
-    (acc, [key, val]) => [...acc, (isObject(val) ? createSingleSourceNode(key, 'regular', val)
+    (acc, [key, val]) => [...acc, (_.isPlainObject(val) ? createSingleSourceNode(key, 'regular', val)
       : createSimpleNode(key, 'regular', val))],
     [],
   );
@@ -28,8 +24,8 @@ const createSingleSourceNode = (name, type, value) => {
 };
 
 const createDiffNode = (name, valueBefore, valueAfter) => {
-  const branchBefore = (valueBefore !== undefined) ? createSingleSourceNode(name, 'deleted', valueBefore) : null;
-  const branchAfter = (valueAfter !== undefined) ? createSingleSourceNode(name, 'added', valueAfter) : null;
+  const branchBefore = (valueBefore !== undefined) ? createSingleSourceNode(name, 'deleted', valueBefore) : undefined;
+  const branchAfter = (valueAfter !== undefined) ? createSingleSourceNode(name, 'added', valueAfter) : undefined;
   return {
     name,
     type: 'diff',
@@ -46,7 +42,7 @@ const createDualSourceNode = (name, objBefore, objAfter) => {
     (acc, key) => {
       const valueBefore = objBefore[key];
       const valueAfter = objAfter[key];
-      if (isObject(valueBefore) && isObject(valueAfter)) {
+      if (_.isPlainObject(valueBefore) && _.isPlainObject(valueAfter)) {
         return [...acc, createDualSourceNode(key, valueBefore, valueAfter)];
       }
       if (valueBefore === valueAfter) {

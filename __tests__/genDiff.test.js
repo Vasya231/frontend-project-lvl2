@@ -23,6 +23,8 @@ const beforeIni = pathToFixture('before.ini');
 const afterIni = pathToFixture('after.ini');
 const expectedIni = pathToFixture('resultIni.txt');
 
+const expectedPlain = pathToFixture('resultPlain.txt');
+
 test.each([
   ['test flat', beforeFlat, afterFlat, expectedFlat],
   ['test empty', beforeEmpty, afterEmpty, expectedEmpty],
@@ -32,4 +34,11 @@ test.each([
 ])('%s', (testname, before, after, expected) => {
   const expectedData = fs.readFileSync(expected, 'utf8');
   expect(genDiff(before, after)).toEqual(expectedData);
+});
+
+test.each([
+  ['test plain', beforeJson, afterJson, expectedPlain],
+])('%s', (testname, before, after, expected) => {
+  const expectedData = fs.readFileSync(expected, 'utf8');
+  expect(genDiff(before, after, 'plain')).toEqual(expectedData);
 });

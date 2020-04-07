@@ -6,17 +6,17 @@ const render = (node, path = '') => {
     name, type, children,
   } = node;
   if (type === 'diff') {
-    const { deleted: nodeBefore, added: nodeAfter } = node;
-    if (!nodeBefore) {
-      const addedValue = (_.isObject(nodeAfter.value) || _.has(nodeAfter, 'children')) ? '[complex value]' : `'${nodeAfter.value}'`;
-      return [`Property '${path}${name}' was added with value: ${addedValue}`];
+    const { deleted, added } = node;
+    const addedValueText = (_.isObject(added)) ? '[complex value]' : `'${added}'`;
+    const deletedValueText = (_.isObject(deleted)) ? '[complex value]' : `'${deleted}'`;
+    if (!deleted) {
+      return [`Property '${path}${name}' was added with value: ${addedValueText}`];
     }
-    if (!nodeAfter) {
+    if (!added) {
       return [`Property '${path}${name}' was deleted`];
     }
-    const addedValue = (_.isObject(nodeAfter.value) || _.has(nodeAfter, 'children')) ? '[complex value]' : `'${nodeAfter.value}'`;
-    const deletedValue = (_.isObject(nodeBefore.value) || _.has(nodeBefore, 'children')) ? '[complex value]' : `'${nodeBefore.value}'`;
-    return [`Property '${path}${name}' was changed from ${deletedValue} to ${addedValue}`];
+    
+    return [`Property '${path}${name}' was changed from ${deletedValueText} to ${addedValueText}`];
   }
   if (children) {
     return children

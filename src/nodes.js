@@ -24,13 +24,13 @@ const createSingleSourceNode = (name, type, value) => {
 };
 
 const createDiffNode = (name, valueBefore, valueAfter) => {
-  const branchBefore = (valueBefore !== undefined) ? createSingleSourceNode(name, 'deleted', valueBefore) : undefined;
-  const branchAfter = (valueAfter !== undefined) ? createSingleSourceNode(name, 'added', valueAfter) : undefined;
+  // const branchBefore = (valueBefore !== undefined) ? createSingleSourceNode(name, 'deleted', valueBefore) : undefined;
+  // const branchAfter = (valueAfter !== undefined) ? createSingleSourceNode(name, 'added', valueAfter) : undefined;
   return {
     name,
     type: 'diff',
-    deleted: branchBefore,
-    added: branchAfter,
+    deleted: valueBefore,
+    added: valueAfter,
   };
 };
 

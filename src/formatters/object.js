@@ -1,38 +1,41 @@
 import _ from 'lodash';
 
-const prefixes = {
-  added: '+ ',
-  deleted: '- ',
-  regular: '  ',
+const offsetInc = 4;
+
+const displayValue = (value, offset) => {
+  if (!_.isPlainObject(value)) {
+    return value;
+  }
+  const keys = Object.keys(value);
+  const offsetStr = ' '.repeat(offset);
+  const nextOffset = offset + offsetInc;
+  const nestedOffsetStr = ' '.repeat(nextOffset + 2);
+  const props = keys.map((key) => `${key}: ${displayValue(value[key], nextOffset)}`);
+  const movedProps = props.map((str) => nestedOffsetStr.concat(str)).join('\n');
+  return '{\n'.concat(movedProps, '\n', offsetStr, '  }');
 };
 
-const getPrefix = (type) => prefixes[type];
-
-const render = (diffObj, currentPos, offsetInc = 4) => {
-  const {
-    name, children, value, type,
-  } = diffObj;
-  if (type === 'diff') {
-    const { deleted: nodeBefore, added: nodeAfter } = diffObj;
-    const strBefore = nodeBefore ? render(nodeBefore, currentPos, offsetInc) : [];
-    const strAfter = nodeAfter ? render(nodeAfter, currentPos, offsetInc) : [];
-    return _.flatten([strBefore, strAfter]).join('\n');
+const render = (diffObj, currentPos) => {
+  const { children, value } = diffObj;
+  if (_.has(diffObj, 'value')) {
+    return displayValue(value, currentPos);
   }
-  const offsetStr = ' '.repeat(currentPos > 0 ? currentPos : 0);
-  const prefix = getPrefix(type);
-  const nameStr = name ? `${offsetStr}${prefix}${name}: ` : '';
-  if (value !== undefined) return nameStr.concat(`${value}`);
+  const regularPrefix = ' '.repeat(currentPos + offsetInc).concat('  ');
+  const prefixForAdded = ' '.repeat(currentPos + offsetInc).concat('+ ');
+  const prefixForDeleted = ' '.repeat(currentPos + offsetInc).concat('- ');
   const childrenStr = children.reduce(
-    (acc, child) => acc.concat('\n', render(child, currentPos + offsetInc, offsetInc)),
+    (acc, child) => {
+      const nameStr = `${child.name}: `;
+      if (child.type !== 'diff') {
+        return acc.concat('\n', regularPrefix, nameStr, render(child, currentPos + offsetInc));
+      }
+      const addedStr = (child.added !== undefined) ? '\n'.concat(prefixForAdded, nameStr, displayValue(child.added, currentPos + offsetInc)) : '';
+      const deletedStr = (child.deleted !== undefined) ? '\n'.concat(prefixForDeleted, nameStr, displayValue(child.deleted, currentPos + offsetInc)) : '';
+      return acc.concat(deletedStr, addedStr);
+    },
     '',
   );
-  const closingStr = name ? `${offsetStr}  }` : '}';
-  return nameStr.concat(
-    '{',
-    childrenStr,
-    '\n',
-    closingStr,
-  );
+  return '{'.concat(childrenStr, '\n', ' '.repeat(currentPos + 2), '}');
 };
 
 export default render;

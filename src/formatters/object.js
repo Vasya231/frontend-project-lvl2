@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 const offsetInc = 4;
+const prefixLength = 2;
 
 const displayValue = (value, offset) => {
   if (!_.isPlainObject(value)) {
@@ -9,7 +10,7 @@ const displayValue = (value, offset) => {
   const keys = Object.keys(value);
   const offsetStr = ' '.repeat(offset);
   const nextOffset = offset + offsetInc;
-  const nestedOffsetStr = ' '.repeat(nextOffset + 2);
+  const nestedOffsetStr = ' '.repeat(nextOffset + prefixLength);
   const props = keys.map((key) => `${key}: ${displayValue(value[key], nextOffset)}`);
   const movedProps = props.map((str) => nestedOffsetStr.concat(str)).join('\n');
   return '{\n'.concat(movedProps, '\n', offsetStr, '  }');
@@ -35,7 +36,7 @@ const render = (diffObj, currentPos) => {
     },
     '',
   );
-  return '{'.concat(childrenStr, '\n', ' '.repeat(currentPos + 2), '}');
+  return '{'.concat(childrenStr, '\n', ' '.repeat(currentPos + prefixLength), '}');
 };
 
 export default render;

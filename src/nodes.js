@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-const createSimpleNode = (name, type, value) => ({
+const createSimpleNode = (name, value) => ({
   name,
-  type,
+  type: 'regular',
   value,
 });
 
@@ -25,7 +25,7 @@ const createDualSourceNode = (name, objBefore, objAfter) => {
         return [...acc, createDualSourceNode(key, valueBefore, valueAfter)];
       }
       if (valueBefore === valueAfter) {
-        return [...acc, createSimpleNode(key, 'regular', valueBefore)];
+        return [...acc, createSimpleNode(key, valueBefore)];
       }
       return [...acc, createDiffNode(key, valueBefore, valueAfter)];
     },

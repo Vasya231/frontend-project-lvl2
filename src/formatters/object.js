@@ -8,12 +8,12 @@ const displayValue = (value, offset) => {
     return value;
   }
   const keys = Object.keys(value);
-  const offsetStr = ' '.repeat(offset);
+  const offsetStr = ' '.repeat(offset + prefixLength);
   const nextOffset = offset + offsetInc;
   const nestedOffsetStr = ' '.repeat(nextOffset + prefixLength);
   const props = keys.map((key) => `${key}: ${displayValue(value[key], nextOffset)}`);
   const movedProps = props.map((str) => nestedOffsetStr.concat(str)).join('\n');
-  return '{\n'.concat(movedProps, '\n', offsetStr, '  }');
+  return '{\n'.concat(movedProps, '\n', offsetStr, '}');
 };
 
 const render = (diffObj, currentPos) => {
@@ -24,6 +24,7 @@ const render = (diffObj, currentPos) => {
   const regularPrefix = ' '.repeat(currentPos + offsetInc).concat('  ');
   const prefixForAdded = ' '.repeat(currentPos + offsetInc).concat('+ ');
   const prefixForDeleted = ' '.repeat(currentPos + offsetInc).concat('- ');
+  const prefixForClosingQuote = ' '.repeat(currentPos + prefixLength);
   const childrenStr = children.reduce(
     (acc, child) => {
       const nameStr = `${child.name}: `;
@@ -36,7 +37,7 @@ const render = (diffObj, currentPos) => {
     },
     '',
   );
-  return '{'.concat(childrenStr, '\n', ' '.repeat(currentPos + prefixLength), '}');
+  return '{'.concat(childrenStr, '\n', prefixForClosingQuote, '}');
 };
 
 export default render;

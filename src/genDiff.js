@@ -11,7 +11,7 @@ const getFormat = (pathToFile) => {
   if (extName === '.json') return 'json';
   if (extName === '.yml') return 'yaml';
   if (extName === '.ini') return 'ini';
-  return null;
+  throw new Error(`Failed to identify file format: ${pathToFile}`);
 };
 
 

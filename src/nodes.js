@@ -1,40 +1,46 @@
 import _ from 'lodash';
 
-const createSimpleNode = (name, value) => ({
+const createSimpleNode = (name, type, value) => ({
   name,
-  type: 'regular',
+  type,
   value,
 });
 
 const createDiffNode = (name, valueBefore, valueAfter) => ({
   name,
-  type: 'diff',
-  deleted: valueBefore,
+  type: 'changed',
+  removed: valueBefore,
   added: valueAfter,
 });
 
 const createDualSourceNode = (name, objBefore, objAfter) => {
   const keysBefore = Object.keys(objBefore);
   const keysAfter = Object.keys(objAfter);
-  const allKeys = _.union(keysBefore, keysAfter);
-  const children = allKeys.reduce(
-    (acc, key) => {
-      const valueBefore = objBefore[key];
-      const valueAfter = objAfter[key];
-      if (_.isPlainObject(valueBefore) && _.isPlainObject(valueAfter)) {
-        return [...acc, createDualSourceNode(key, valueBefore, valueAfter)];
-      }
-      if (valueBefore === valueAfter) {
-        return [...acc, createSimpleNode(key, valueBefore)];
-      }
-      return [...acc, createDiffNode(key, valueBefore, valueAfter)];
-    },
-    [],
+  const addedKeys = keysAfter.filter((key) => !keysBefore.includes(key));
+  const removedKeys = keysBefore.filter((key) => !keysAfter.includes(key));
+  const commonKeys = _.intersection(keysBefore, keysAfter);
+  const objectKeys = commonKeys.filter(
+    (key) => (_.isPlainObject(objBefore[key]) && (_.isPlainObject(objAfter[key]))),
+  );
+  const valueKeys = _.without(commonKeys, ...objectKeys);
+  const addedChildren = addedKeys.map(
+    (key) => createSimpleNode(key, 'added', objAfter[key]),
+  );
+  const removedChildren = removedKeys.map(
+    (key) => createSimpleNode(key, 'removed', objBefore[key]),
+  );
+  const objectChildren = objectKeys.map(
+    (key) => createDualSourceNode(key, objBefore[key], objAfter[key]),
+  );
+  const valueChildren = valueKeys.map(
+    (key) => (objBefore[key] === objAfter[key]
+      ? createSimpleNode(key, 'equal', objBefore[key])
+      : createDiffNode(key, objBefore[key], objAfter[key])),
   );
   return {
     name,
-    type: 'regular',
-    children,
+    type: 'dualSource',
+    children: [...addedChildren, ...removedChildren, ...objectChildren, ...valueChildren],
   };
 };
 

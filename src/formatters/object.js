@@ -16,28 +16,44 @@ const displayValue = (value, offset) => {
   return '{\n'.concat(movedProps, '\n', offsetStr, '}');
 };
 
-const render = (diffObj, currentPos) => {
-  const { children, value } = diffObj;
-  if (_.has(diffObj, 'value')) {
-    return displayValue(value, currentPos);
-  }
-  const regularPrefix = ' '.repeat(currentPos + offsetInc).concat('  ');
-  const prefixForAdded = ' '.repeat(currentPos + offsetInc).concat('+ ');
-  const prefixForDeleted = ' '.repeat(currentPos + offsetInc).concat('- ');
+const renderSimpleNode = (node, currentPos, prefix) => {
+  const prefixStr = ' '.repeat(currentPos).concat(prefix, ' ');
+  // console.log(`rendering ${node.type} node with name ${node.name} and value ${node.value}`);
+  return `${prefixStr}${node.name}: ${displayValue(node.value, currentPos)}`;
+};
+
+const renderNodeAsAdded = (node, currentPos) => renderSimpleNode(node, currentPos, '+');
+
+const renderNodeAsRemoved = (node, currentPos) => renderSimpleNode(node, currentPos, '-');
+
+const renderEqualNode = (node, currentPos) => renderSimpleNode(node, currentPos, ' ');
+
+const renderDiffNode = (node, currentPos) => {
+  const added = renderNodeAsAdded({ ...node, value: node.added }, currentPos);
+  const removed = renderNodeAsRemoved({ ...node, value: node.removed }, currentPos);
+  return `${added}${'\n'}${removed}`;
+};
+
+const renderDualSourceNode = (diffObj, currentPos) => {
+  const { name, children } = diffObj;
+  const nestedPos = currentPos + offsetInc;
+  const regularPrefix = ' '.repeat(currentPos > 0 ? currentPos : 0).concat('  ');
   const prefixForClosingQuote = ' '.repeat(currentPos + prefixLength);
   const childrenStr = children.reduce(
     (acc, child) => {
-      const nameStr = `${child.name}: `;
-      if (child.type !== 'diff') {
-        return acc.concat('\n', regularPrefix, nameStr, render(child, currentPos + offsetInc));
+      switch (child.type) {
+        case 'added': return acc.concat('\n', renderNodeAsAdded(child, nestedPos));
+        case 'removed': return acc.concat('\n', renderNodeAsRemoved(child, nestedPos));
+        case 'changed': return acc.concat('\n', renderDiffNode(child, nestedPos));
+        case 'equal': return acc.concat('\n', renderEqualNode(child, nestedPos));
+        case 'dualSource': return acc.concat('\n', renderDualSourceNode(child, nestedPos));
+        default: throw new Error(`Unexpected node type: ${child.type}`);
       }
-      const addedStr = (child.added !== undefined) ? '\n'.concat(prefixForAdded, nameStr, displayValue(child.added, currentPos + offsetInc)) : '';
-      const deletedStr = (child.deleted !== undefined) ? '\n'.concat(prefixForDeleted, nameStr, displayValue(child.deleted, currentPos + offsetInc)) : '';
-      return acc.concat(deletedStr, addedStr);
     },
     '',
   );
-  return '{'.concat(childrenStr, '\n', prefixForClosingQuote, '}');
+  const nameStr = name ? regularPrefix.concat(name, ': ') : '';
+  return nameStr.concat('{', childrenStr, '\n', prefixForClosingQuote, '}');
 };
 
-export default render;
+export default renderDualSourceNode;

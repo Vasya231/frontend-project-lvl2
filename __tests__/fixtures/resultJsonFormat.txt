@@ -1,59 +1,59 @@
 {
   "name": "",
-  "type": "regular",
+  "type": "dualSource",
   "children": [
     {
       "name": "common",
-      "type": "regular",
+      "type": "dualSource",
       "children": [
         {
           "name": "setting1",
-          "type": "regular",
+          "type": "equal",
           "value": "Value 1"
         },
         {
           "name": "setting2",
-          "type": "diff",
-          "deleted": 200
+          "type": "removed",
+          "value": 200
         },
         {
           "name": "setting3",
-          "type": "diff",
-          "deleted": true,
+          "type": "changed",
+          "removed": true,
           "added": {
             "key": "value"
           }
         },
         {
           "name": "setting6",
-          "type": "regular",
+          "type": "dualSource",
           "children": [
             {
               "name": "key",
-              "type": "regular",
+              "type": "equal",
               "value": "value"
             },
             {
               "name": "ops",
-              "type": "diff",
-              "added": "vops"
+              "type": "added",
+              "value": "vops"
             }
           ]
         },
         {
           "name": "follow",
-          "type": "diff",
-          "added": false
+          "type": "added",
+          "value": false
         },
         {
           "name": "setting4",
-          "type": "diff",
-          "added": "blah blah"
+          "type": "added",
+          "value": "blah blah"
         },
         {
           "name": "setting5",
-          "type": "diff",
-          "added": {
+          "type": "added",
+          "value": {
             "key5": "value5"
           }
         }
@@ -61,23 +61,23 @@
     },
     {
       "name": "group1",
-      "type": "regular",
+      "type": "dualSource",
       "children": [
         {
           "name": "baz",
-          "type": "diff",
-          "deleted": "bas",
+          "type": "changed",
+          "removed": "bas",
           "added": "bars"
         },
         {
           "name": "foo",
-          "type": "regular",
+          "type": "equal",
           "value": "bar"
         },
         {
           "name": "nest",
-          "type": "diff",
-          "deleted": {
+          "type": "changed",
+          "removed": {
             "key": "value"
           },
           "added": "str"
@@ -86,15 +86,15 @@
     },
     {
       "name": "group2",
-      "type": "diff",
-      "deleted": {
+      "type": "removed",
+      "value": {
         "abc": 12345
       }
     },
     {
       "name": "group3",
-      "type": "diff",
-      "added": {
+      "type": "added",
+      "value": {
         "fee": 100500
       }
     }

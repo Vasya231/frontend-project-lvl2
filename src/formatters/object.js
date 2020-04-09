@@ -31,7 +31,7 @@ const renderEqualNode = (node, currentPos) => renderSimpleNode(node, currentPos,
 const renderDiffNode = (node, currentPos) => {
   const added = renderNodeAsAdded({ ...node, value: node.added }, currentPos);
   const removed = renderNodeAsRemoved({ ...node, value: node.removed }, currentPos);
-  return `${added}${'\n'}${removed}`;
+  return `${removed}${'\n'}${added}`;
 };
 
 const renderDualSourceNode = (diffObj, currentPos) => {

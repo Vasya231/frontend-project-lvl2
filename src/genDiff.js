@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import path from 'path';
 import parse from './parsers';
 import createNode from './nodes';
-import render from './formatters/render';
+import render from './formatters/formatters';
 
 const generateDiffList = (objBefore, objAfter) => createNode('', objBefore, objAfter);
 

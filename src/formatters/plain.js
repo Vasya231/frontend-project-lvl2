@@ -6,13 +6,11 @@ const render = (node, path = '') => {
     name, type, children,
     removed, added, value,
   } = node;
-  if (type === 'dualSource') {
-    return children
+  switch (type) {
+    case 'dualSource': return children
       .map((child) => render(child, name ? path.concat(`${name}.`) : path))
       .filter((mappedChild) => mappedChild)
       .join('\n');
-  }
-  switch (type) {
     case 'added': {
       const addedValueText = (_.isObject(value)) ? '[complex value]' : `'${value}'`;
       return `Property '${path}${name}' was added with value: ${addedValueText}`;

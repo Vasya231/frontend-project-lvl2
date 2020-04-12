@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import genDiff from '../src/genDiff.js';
+import genDiff from '../src/index';
 
 const pathToFixture = (filename) => `${__dirname}/fixtures/${filename}`;
 

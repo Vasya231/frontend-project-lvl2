@@ -2,7 +2,7 @@
   "name": "frontend-project-lvl2",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/genDiff.js",
+  "main": "dist/index.js",
   "files": [
     "dist"
   ],

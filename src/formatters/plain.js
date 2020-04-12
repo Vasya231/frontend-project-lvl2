@@ -1,29 +1,30 @@
-import _ from 'lodash';
-
-
-const render = (node, path = '') => {
-  const {
-    name, type, children,
-    removed, added, value,
-  } = node;
-  switch (type) {
-    case 'dualSource': return children
-      .map((child) => render(child, name ? path.concat(`${name}.`) : path))
-      .filter((mappedChild) => mappedChild)
-      .join('\n');
-    case 'added': {
-      const addedValueText = (_.isObject(value)) ? '[complex value]' : `'${value}'`;
-      return `Property '${path}${name}' was added with value: ${addedValueText}`;
+const render = (nodes, path = '') => {
+  const renderNode = (node, innerPath) => {
+    const {
+      name, type, children,
+      valueBefore, valueAfter, value,
+    } = node;
+    switch (type) {
+      case 'complex': return render(children, `${innerPath}${name}.`);
+      case 'added': {
+        const addedValueText = (typeof value === 'object') ? '[complex value]' : `'${value}'`;
+        return `Property '${innerPath}${name}' was added with value: ${addedValueText}`;
+      }
+      case 'removed': return `Property '${innerPath}${name}' was deleted`;
+      case 'changed': {
+        const deletedValueText = (typeof valueBefore === 'object') ? '[complex value]' : `'${valueBefore}'`;
+        const addedValueText = (typeof valueAfter === 'object') ? '[complex value]' : `'${valueAfter}'`;
+        return `Property '${innerPath}${name}' was changed from ${deletedValueText} to ${addedValueText}`;
+      }
+      case 'unchanged': return '';
+      default: throw new Error(`Unexpected node type: ${type}`);
     }
-    case 'removed': return `Property '${path}${name}' was deleted`;
-    case 'changed': {
-      const deletedValueText = (_.isObject(removed)) ? '[complex value]' : `'${removed}'`;
-      const addedValueText = (_.isObject(added)) ? '[complex value]' : `'${added}'`;
-      return `Property '${path}${name}' was changed from ${deletedValueText} to ${addedValueText}`;
-    }
-    case 'equal': return '';
-    default: throw new Error(`Unexpected node type: ${type}`);
-  }
+  };
+
+  return nodes
+    .map((node) => renderNode(node, path))
+    .filter((renderedNode) => renderedNode)
+    .join('\n');
 };
 
-export default render;
+export default (nodes) => render(nodes);

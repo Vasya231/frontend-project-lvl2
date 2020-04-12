@@ -1,102 +1,98 @@
-{
-  "name": "",
-  "type": "dualSource",
-  "children": [
-    {
-      "name": "common",
-      "type": "dualSource",
-      "children": [
-        {
-          "name": "setting1",
-          "type": "equal",
-          "value": "Value 1"
-        },
-        {
-          "name": "setting2",
-          "type": "removed",
-          "value": 200
-        },
-        {
-          "name": "setting3",
-          "type": "changed",
-          "removed": true,
-          "added": {
-            "key": "value"
-          }
-        },
-        {
-          "name": "setting6",
-          "type": "dualSource",
-          "children": [
-            {
-              "name": "key",
-              "type": "equal",
-              "value": "value"
-            },
-            {
-              "name": "ops",
-              "type": "added",
-              "value": "vops"
-            }
-          ]
-        },
-        {
-          "name": "follow",
-          "type": "added",
-          "value": false
-        },
-        {
-          "name": "setting4",
-          "type": "added",
-          "value": "blah blah"
-        },
-        {
-          "name": "setting5",
-          "type": "added",
-          "value": {
-            "key5": "value5"
-          }
+[
+  {
+    "name": "common",
+    "type": "complex",
+    "children": [
+      {
+        "name": "setting1",
+        "type": "unchanged",
+        "value": "Value 1"
+      },
+      {
+        "name": "setting2",
+        "type": "removed",
+        "value": 200
+      },
+      {
+        "name": "setting3",
+        "type": "changed",
+        "valueBefore": true,
+        "valueAfter": {
+          "key": "value"
         }
-      ]
-    },
-    {
-      "name": "group1",
-      "type": "dualSource",
-      "children": [
-        {
-          "name": "baz",
-          "type": "changed",
-          "removed": "bas",
-          "added": "bars"
-        },
-        {
-          "name": "foo",
-          "type": "equal",
-          "value": "bar"
-        },
-        {
-          "name": "nest",
-          "type": "changed",
-          "removed": {
-            "key": "value"
+      },
+      {
+        "name": "setting6",
+        "type": "complex",
+        "children": [
+          {
+            "name": "key",
+            "type": "unchanged",
+            "value": "value"
           },
-          "added": "str"
+          {
+            "name": "ops",
+            "type": "added",
+            "value": "vops"
+          }
+        ]
+      },
+      {
+        "name": "follow",
+        "type": "added",
+        "value": false
+      },
+      {
+        "name": "setting4",
+        "type": "added",
+        "value": "blah blah"
+      },
+      {
+        "name": "setting5",
+        "type": "added",
+        "value": {
+          "key5": "value5"
         }
-      ]
-    },
-    {
-      "name": "group2",
-      "type": "removed",
-      "value": {
-        "abc": 12345
       }
-    },
-    {
-      "name": "group3",
-      "type": "added",
-      "value": {
-        "fee": 100500
+    ]
+  },
+  {
+    "name": "group1",
+    "type": "complex",
+    "children": [
+      {
+        "name": "baz",
+        "type": "changed",
+        "valueBefore": "bas",
+        "valueAfter": "bars"
+      },
+      {
+        "name": "foo",
+        "type": "unchanged",
+        "value": "bar"
+      },
+      {
+        "name": "nest",
+        "type": "changed",
+        "valueBefore": {
+          "key": "value"
+        },
+        "valueAfter": "str"
       }
+    ]
+  },
+  {
+    "name": "group2",
+    "type": "removed",
+    "value": {
+      "abc": 12345
     }
-  ]
-}
+  },
+  {
+    "name": "group3",
+    "type": "added",
+    "value": {
+      "fee": 100500
+    }
+  }
+]

@@ -4,8 +4,6 @@ import parse from './parsers';
 import compareObjects from './nodes';
 import render from './formatters';
 
-const generateDiffList = (objBefore, objAfter) => compareObjects(objBefore, objAfter);
-
 const getFormat = (pathToFile) => {
   const extName = path.extname(pathToFile);
   if (extName === '.json') return 'json';
@@ -22,7 +20,7 @@ const genDiff = (pathToFile1, pathToFile2, format = 'pretty') => {
   const fileData2 = fs.readFileSync(secondConfigFullPath, 'utf8');
   const objBefore = parse(getFormat(firstConfigFullPath), fileData1);
   const objAfter = parse(getFormat(secondConfigFullPath), fileData2);
-  const diffs = generateDiffList(objBefore, objAfter);
+  const diffs = compareObjects(objBefore, objAfter);
   const diffText = render(diffs, format);
   return diffText;
 };

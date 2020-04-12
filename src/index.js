@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import path from 'path';
 import parse from './parsers';
-import createNode from './nodes';
+import compareObjects from './nodes';
 import render from './formatters';
 
-const generateDiffList = (objBefore, objAfter) => createNode('', objBefore, objAfter);
+const generateDiffList = (objBefore, objAfter) => compareObjects(objBefore, objAfter);
 
 const getFormat = (pathToFile) => {
   const extName = path.extname(pathToFile);
@@ -22,8 +22,8 @@ const genDiff = (pathToFile1, pathToFile2, format = 'pretty') => {
   const fileData2 = fs.readFileSync(secondConfigFullPath, 'utf8');
   const objBefore = parse(getFormat(firstConfigFullPath), fileData1);
   const objAfter = parse(getFormat(secondConfigFullPath), fileData2);
-  const diffObj = generateDiffList(objBefore, objAfter);
-  const diffText = render(diffObj, format);
+  const diffs = generateDiffList(objBefore, objAfter);
+  const diffText = render(diffs, format);
   return diffText;
 };
 

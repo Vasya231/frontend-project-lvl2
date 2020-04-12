@@ -1,12 +1,32 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/eb97f7c29b63b51baee0/maintainability)](https://codeclimate.com/github/Vasya231/frontend-project-lvl2/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/eb97f7c29b63b51baee0/test_coverage)](https://codeclimate.com/github/Vasya231/frontend-project-lvl2/test_coverage)
 ![](https://github.com/Vasya231/frontend-project-lvl2/workflows/CI/badge.svg)
 
+## Установка:
+Go to project directory and execute:
+
+    make build
+    sudo npm link
+    
+  
 <details>
-  <summary>Установка</summary>
+  <summary>Asciinema</summary>
 <a href="https://asciinema.org/a/IktojVObsbXQrjqx1yUw6lLZ6" target="_blank"><img src="https://asciinema.org/a/IktojVObsbXQrjqx1yUw6lLZ6.svg" /></a>
 </details>
 
-Примеры использования:
+## Использование:
+
+    gendiff [options] <firstConfig> <secondConfig>
+    
+Compares two configuration files and shows a difference.
+
+Options:
+  -V, --version        output the version number
+  -f, --format [type]  output format, valid formats: pretty, plain, json
+                       (default: "pretty")
+  -h, --help           display help for command
+
+
+### Примеры использования:
 
 <details>
 <summary>Плоский json</summary>

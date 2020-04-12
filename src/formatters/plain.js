@@ -22,9 +22,7 @@ const render = (nodes, path = '') => {
       default: throw new Error(`Unexpected node type: ${type}`);
     }
   };
-
-  return nodes
-    .map((node) => renderNode(node, path))
+  return nodes.map((node) => renderNode(node, path))
     .filter((renderedNode) => renderedNode)
     .join('\n');
 };

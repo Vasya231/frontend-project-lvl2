@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const offsetInc = 4;
+const nestedOffset = 4;
 const prefixLength = 2;
 
 const prefixes = {
@@ -14,8 +14,8 @@ const displayValue = (value, nestingDepth) => {
     return value.toString();
   }
   const keys = Object.keys(value);
-  const closingQuoteStr = `${' '.repeat(nestingDepth * offsetInc)}}`;
-  const nestedOffsetStr = ' '.repeat((nestingDepth + 1) * offsetInc - prefixLength);
+  const closingQuoteStr = `${' '.repeat(nestingDepth * nestedOffset)}}`;
+  const nestedOffsetStr = ' '.repeat((nestingDepth + 1) * nestedOffset - prefixLength);
   const props = keys.map((key) => `${prefixes.unchanged}${key}: ${displayValue(value[key], nestingDepth + 1)}`);
   const movedProps = props.map((str) => `${nestedOffsetStr}${str}`).join('\n');
   return ['{', movedProps, closingQuoteStr].join('\n');
@@ -23,8 +23,8 @@ const displayValue = (value, nestingDepth) => {
 
 
 const renderNodes = (nodes, nestingDepth) => {
-  const namesOffsetStr = ' '.repeat((nestingDepth + 1) * offsetInc - prefixLength);
-  const closingQuoteStr = `${' '.repeat(nestingDepth * offsetInc)}}`;
+  const namesOffsetStr = ' '.repeat((nestingDepth + 1) * nestedOffset - prefixLength);
+  const closingQuoteStr = `${' '.repeat(nestingDepth * nestedOffset)}}`;
   const renderedNodes = nodes.map((node) => {
     const { name, type } = node;
     switch (type) {

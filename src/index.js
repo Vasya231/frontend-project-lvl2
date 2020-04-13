@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import path from 'path';
 import parse from './parsers';
-import compareObjects from './nodes';
+import compareObjects from './treeBuilder';
 import render from './formatters';
 
 const getFormat = (pathToFile) => {

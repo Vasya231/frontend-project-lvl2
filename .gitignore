@@ -2,5 +2,3 @@ node_modules/
 .vscode/
 dist/
 coverage/
-test1.json
-test2.json

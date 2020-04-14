@@ -1,9 +1,10 @@
+# Генератор отличий
 [![Maintainability](https://api.codeclimate.com/v1/badges/eb97f7c29b63b51baee0/maintainability)](https://codeclimate.com/github/Vasya231/frontend-project-lvl2/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/eb97f7c29b63b51baee0/test_coverage)](https://codeclimate.com/github/Vasya231/frontend-project-lvl2/test_coverage)
-![](https://github.com/Vasya231/frontend-project-lvl2/workflows/CI/badge.svg)
+![CI](https://github.com/Vasya231/frontend-project-lvl2/workflows/CI/badge.svg)
 
 ## Установка:
-Go to project directory and execute:
 
+    cd <project_dir>
     make build
     sudo npm link
     
@@ -57,3 +58,12 @@ Options:
 <summary>JSON формат вывода</summary>
 <a href="https://asciinema.org/a/HnfHbgt2cI2i36GhNFJxUmhVg" target="_blank"><img src="https://asciinema.org/a/HnfHbgt2cI2i36GhNFJxUmhVg.svg" /></a>
 </details>
+
+### Dependencies:
+https://github.com/tj/commander.js
+
+https://github.com/isaacs/ini
+
+https://github.com/nodeca/js-yaml
+
+https://lodash.com/

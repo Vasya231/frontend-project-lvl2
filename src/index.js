@@ -4,14 +4,7 @@ import parse from './parsers';
 import compareObjects from './treeBuilder';
 import render from './formatters';
 
-const getFormat = (pathToFile) => {
-  const extName = path.extname(pathToFile);
-  if (extName === '.json') return 'json';
-  if (extName === '.yml') return 'yaml';
-  if (extName === '.ini') return 'ini';
-  throw new Error(`Failed to identify file format: ${pathToFile}`);
-};
-
+const getFormat = (pathToFile) => path.extname(pathToFile).slice(1);
 
 const genDiff = (pathToFile1, pathToFile2, format = 'pretty') => {
   const firstConfigFullPath = path.resolve(process.cwd(), pathToFile1);

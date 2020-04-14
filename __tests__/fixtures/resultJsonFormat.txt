@@ -4,6 +4,11 @@
     "type": "complex",
     "children": [
       {
+        "name": "follow",
+        "type": "added",
+        "value": false
+      },
+      {
         "name": "setting1",
         "type": "unchanged",
         "value": "Value 1"
@@ -22,6 +27,18 @@
         }
       },
       {
+        "name": "setting4",
+        "type": "added",
+        "value": "blah blah"
+      },
+      {
+        "name": "setting5",
+        "type": "added",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      {
         "name": "setting6",
         "type": "complex",
         "children": [
@@ -36,23 +53,6 @@
             "value": "vops"
           }
         ]
-      },
-      {
-        "name": "follow",
-        "type": "added",
-        "value": false
-      },
-      {
-        "name": "setting4",
-        "type": "added",
-        "value": "blah blah"
-      },
-      {
-        "name": "setting5",
-        "type": "added",
-        "value": {
-          "key5": "value5"
-        }
       }
     ]
   },

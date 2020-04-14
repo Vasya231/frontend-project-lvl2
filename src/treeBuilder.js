@@ -3,7 +3,7 @@ import _ from 'lodash';
 const compareObjects = (objBefore, objAfter) => {
   const keysBefore = Object.keys(objBefore);
   const keysAfter = Object.keys(objAfter);
-  const allKeys = _.union(keysBefore, keysAfter);
+  const allKeys = _.union(keysBefore, keysAfter).sort();
   return allKeys.map((key) => {
     const valueBefore = objBefore[key];
     const valueAfter = objAfter[key];

@@ -3,7 +3,7 @@ import ini from 'ini';
 
 const parsers = {
   json: JSON.parse,
-  yaml: (data) => yaml.safeLoad(data) || {},
+  yaml: yaml.safeLoad,
   ini: ini.parse,
 };
 

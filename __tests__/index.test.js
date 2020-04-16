@@ -3,9 +3,6 @@ import genDiff from '../src/index';
 
 const pathToFixture = (filename) => `${__dirname}/fixtures/${filename}`;
 
-const beforeEmpty = pathToFixture('beforeEmpty.json');
-const afterEmpty = pathToFixture('afterEmpty.json');
-
 const beforeYml = pathToFixture('before.yml');
 const afterYml = pathToFixture('after.yml');
 
@@ -18,19 +15,37 @@ const afterIni = pathToFixture('after.ini');
 const expectedData = {};
 
 beforeAll(() => {
-  expectedData.empty = fs.readFileSync(pathToFixture('resultEmpty.txt'), 'utf8');
-  expectedData.ini = fs.readFileSync(pathToFixture('resultIni.txt'), 'utf8');
   expectedData.plainFormat = fs.readFileSync(pathToFixture('resultPlain.txt'), 'utf8');
   expectedData.jsonFormat = fs.readFileSync(pathToFixture('resultJsonFormat.txt'), 'utf8');
   expectedData.prettyFormat = fs.readFileSync(pathToFixture('resultPretty.txt'), 'utf8');
 });
 
-test.each([
-  ['test empty', beforeEmpty, afterEmpty, 'empty', 'pretty'],
-  ['test yml, plain formatting', beforeYml, afterYml, 'plainFormat', 'plain'],
-  ['test json, pretty formatting', beforeJson, afterJson, 'prettyFormat', 'pretty'],
-  ['test ini', beforeIni, afterIni, 'ini', 'pretty'],
-  ['test json formatting', beforeJson, afterJson, 'jsonFormat', 'json'],
-])('%s', (testname, before, after, expected, format) => {
-  expect(genDiff(before, after, format)).toEqual(expectedData[expected]);
+describe('Test pretty formatting', () => {
+  test.each([
+    ['test yml', beforeYml, afterYml],
+    ['test json', beforeJson, afterJson],
+    ['test ini', beforeIni, afterIni],
+  ])('%s', (testname, before, after) => {
+    expect(genDiff(before, after, 'pretty')).toEqual(expectedData.prettyFormat);
+  });
+});
+
+describe('Test plain formatting', () => {
+  test.each([
+    ['test yml', beforeYml, afterYml],
+    ['test json', beforeJson, afterJson],
+    ['test ini', beforeIni, afterIni],
+  ])('%s', (testname, before, after) => {
+    expect(genDiff(before, after, 'plain')).toEqual(expectedData.plainFormat);
+  });
+});
+
+describe('Test json formatting', () => {
+  test.each([
+    ['test yml', beforeYml, afterYml],
+    ['test json', beforeJson, afterJson],
+    ['test ini', beforeIni, afterIni],
+  ])('%s', (testname, before, after) => {
+    expect(genDiff(before, after, 'json')).toEqual(expectedData.jsonFormat);
+  });
 });

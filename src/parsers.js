@@ -4,20 +4,13 @@ import _ from 'lodash';
 
 const isNumber = (str) => (str.search(/^-?(0|[1-9]+[0-9]*)(\.[0-9]+)?$/) !== -1);
 
-const transformString = (str) => (isNumber(str) ? Number(str) : str);
+const transformStr = (str) => (isNumber(str) ? Number(str) : str);
 
 const customIniParse = (data) => {
   const parsedData = ini.parse(data);
-  const transform = (obj) => _.mapValues(
-    obj,
-    (value) => {
-      if (_.isString(value)) {
-        return transformString(value);
-      }
-      return (_.isPlainObject(value) ? transform(value) : value);
-    },
-  );
-  return transform(parsedData);
+  return _.cloneDeepWith(parsedData, (value) => (
+    _.isString(value) ? transformStr(value) : undefined
+  ));
 };
 
 const parsers = {

@@ -1,3 +1,5 @@
+const stringify = (value) => ((typeof value === 'object') ? '[complex value]' : `'${value}'`);
+
 const render = (nodes, path = '') => {
   const renderNode = (node, innerPath) => {
     const { name, type } = node;
@@ -8,14 +10,14 @@ const render = (nodes, path = '') => {
       }
       case 'added': {
         const { value } = node;
-        const addedValueText = (typeof value === 'object') ? '[complex value]' : `'${value}'`;
+        const addedValueText = stringify(value);
         return `Property '${innerPath}${name}' was added with value: ${addedValueText}`;
       }
       case 'removed': return `Property '${innerPath}${name}' was deleted`;
       case 'changed': {
         const { valueBefore, valueAfter } = node;
-        const deletedValueText = (typeof valueBefore === 'object') ? '[complex value]' : `'${valueBefore}'`;
-        const addedValueText = (typeof valueAfter === 'object') ? '[complex value]' : `'${valueAfter}'`;
+        const deletedValueText = stringify(valueBefore);
+        const addedValueText = stringify(valueAfter);
         return `Property '${innerPath}${name}' was changed from ${deletedValueText} to ${addedValueText}`;
       }
       case 'unchanged': return '';

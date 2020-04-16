@@ -8,11 +8,11 @@ const stringify = (value, depth) => {
     return value.toString();
   }
   const keys = Object.keys(value);
-  const closingQuoteStr = `${' '.repeat(depth * nestedOffset)}}`;
-  const nestedOffsetStr = ' '.repeat((depth + 1) * nestedOffset - prefixLength);
+  const indentedClosingQuote = `${' '.repeat(depth * nestedOffset)}}`;
+  const currentOffset = ' '.repeat((depth + 1) * nestedOffset - prefixLength);
   const props = keys.map((key) => `  ${key}: ${stringify(value[key], depth + 1)}`);
-  const movedProps = props.map((str) => `${nestedOffsetStr}${str}`).join('\n');
-  return ['{', movedProps, closingQuoteStr].join('\n');
+  const movedProps = props.map((str) => `${currentOffset}${str}`).join('\n');
+  return ['{', movedProps, indentedClosingQuote].join('\n');
 };
 
 const renderNodes = (nodes, depth) => {

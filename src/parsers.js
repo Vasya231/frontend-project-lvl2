@@ -23,7 +23,6 @@ const customIniParse = (data) => {
       if (_.isString(value)) {
         return formatStrValue(value);
       }
-      console.log(_.isArrayLikeObject(value));
       return (_.isPlainObject(value) ? transform(value) : value);
     },
   );

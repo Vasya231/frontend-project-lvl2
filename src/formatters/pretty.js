@@ -3,12 +3,6 @@ import _ from 'lodash';
 const nestedOffset = 4;
 const prefixLength = 2;
 
-const prefixes = {
-  added: '+ ',
-  removed: '- ',
-  unchanged: '  ',
-};
-
 const stringify = (value, depth) => {
   if (!_.isPlainObject(value)) {
     return value.toString();
@@ -16,11 +10,10 @@ const stringify = (value, depth) => {
   const keys = Object.keys(value);
   const closingQuoteStr = `${' '.repeat(depth * nestedOffset)}}`;
   const nestedOffsetStr = ' '.repeat((depth + 1) * nestedOffset - prefixLength);
-  const props = keys.map((key) => `${prefixes.unchanged}${key}: ${stringify(value[key], depth + 1)}`);
+  const props = keys.map((key) => `  ${key}: ${stringify(value[key], depth + 1)}`);
   const movedProps = props.map((str) => `${nestedOffsetStr}${str}`).join('\n');
   return ['{', movedProps, closingQuoteStr].join('\n');
 };
-
 
 const renderNodes = (nodes, depth) => {
   const namesOffset = ' '.repeat((depth + 1) * nestedOffset - prefixLength);
@@ -28,16 +21,22 @@ const renderNodes = (nodes, depth) => {
   const renderedNodes = nodes.map((node) => {
     const { name, type } = node;
     switch (type) {
-      case 'added':
-      case 'removed':
+      case 'added': {
+        const { value } = node;
+        return `${namesOffset}+ ${name}: ${stringify(value, depth + 1)}`;
+      }
+      case 'removed': {
+        const { value } = node;
+        return `${namesOffset}- ${name}: ${stringify(value, depth + 1)}`;
+      }
       case 'unchanged': {
         const { value } = node;
-        return `${namesOffset}${prefixes[type]}${name}: ${stringify(value, depth + 1)}`;
+        return `${namesOffset}  ${name}: ${stringify(value, depth + 1)}`;
       }
       case 'changed': {
         const { valueBefore, valueAfter } = node;
-        const strForRemoved = `${namesOffset}${prefixes.removed}${name}: ${stringify(valueBefore, depth + 1)}`;
-        const strForAdded = `${namesOffset}${prefixes.added}${name}: ${stringify(valueAfter, depth + 1)}`;
+        const strForRemoved = `${namesOffset}- ${name}: ${stringify(valueBefore, depth + 1)}`;
+        const strForAdded = `${namesOffset}+ ${name}: ${stringify(valueAfter, depth + 1)}`;
         return `${strForRemoved}\n${strForAdded}`;
       }
       case 'complex': return `${namesOffset}  ${name}: ${renderNodes(node.children, depth + 1)}`;

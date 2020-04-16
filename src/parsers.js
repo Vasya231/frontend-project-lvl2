@@ -1,17 +1,8 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
-// import _ from 'lodash';
+import _ from 'lodash';
 
-/* const formatStrValue = (str) => {
-  if (_.isNaN(Number(str)) || !isFinite(str)) {
-    return str;
-  }
-  try {
-    return JSON.parse(str);
-  } catch (e) {
-    return str;
-  }
-};
+const isNumber = (str) => (str.search(/^-?(0|[1-9]+[0-9]*)(\.[0-9]+)?$/) !== -1);
 
 const customIniParse = (data) => {
   const parsedData = ini.parse(data);
@@ -19,18 +10,18 @@ const customIniParse = (data) => {
     obj,
     (value) => {
       if (_.isString(value)) {
-        return formatStrValue(value);
+        return isNumber(value) ? Number(value) : value;
       }
       return (_.isPlainObject(value) ? transform(value) : value);
     },
   );
   return transform(parsedData);
-}; */
+};
 
 const parsers = {
   json: JSON.parse,
   yml: yaml.safeLoad,
-  ini: ini.parse,
+  ini: customIniParse,
 };
 
 export default (format, data) => (parsers[format](data));

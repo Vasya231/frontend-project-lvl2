@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 /* const formatStrValue = (str) => {
   if (_.isNaN(Number(str)) || !isFinite(str)) {

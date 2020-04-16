@@ -9,14 +9,14 @@ const prefixes = {
   unchanged: '  ',
 };
 
-const displayValue = (value, nestingDepth) => {
+const stringify = (value, nestingDepth) => {
   if (!_.isPlainObject(value)) {
     return value.toString();
   }
   const keys = Object.keys(value);
   const closingQuoteStr = `${' '.repeat(nestingDepth * nestedOffset)}}`;
   const nestedOffsetStr = ' '.repeat((nestingDepth + 1) * nestedOffset - prefixLength);
-  const props = keys.map((key) => `${prefixes.unchanged}${key}: ${displayValue(value[key], nestingDepth + 1)}`);
+  const props = keys.map((key) => `${prefixes.unchanged}${key}: ${stringify(value[key], nestingDepth + 1)}`);
   const movedProps = props.map((str) => `${nestedOffsetStr}${str}`).join('\n');
   return ['{', movedProps, closingQuoteStr].join('\n');
 };
@@ -32,12 +32,12 @@ const renderNodes = (nodes, nestingDepth) => {
       case 'removed':
       case 'unchanged': {
         const { value } = node;
-        return `${namesOffsetStr}${prefixes[type]}${name}: ${displayValue(value, nestingDepth + 1)}`;
+        return `${namesOffsetStr}${prefixes[type]}${name}: ${stringify(value, nestingDepth + 1)}`;
       }
       case 'changed': {
         const { valueBefore, valueAfter } = node;
-        const strForRemoved = `${namesOffsetStr}${prefixes.removed}${name}: ${displayValue(valueBefore, nestingDepth + 1)}`;
-        const strForAdded = `${namesOffsetStr}${prefixes.added}${name}: ${displayValue(valueAfter, nestingDepth + 1)}`;
+        const strForRemoved = `${namesOffsetStr}${prefixes.removed}${name}: ${stringify(valueBefore, nestingDepth + 1)}`;
+        const strForAdded = `${namesOffsetStr}${prefixes.added}${name}: ${stringify(valueAfter, nestingDepth + 1)}`;
         return `${strForRemoved}\n${strForAdded}`;
       }
       case 'complex': return `${namesOffsetStr}  ${name}: ${renderNodes(node.children, nestingDepth + 1)}`;

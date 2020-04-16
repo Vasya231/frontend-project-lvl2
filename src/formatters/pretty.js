@@ -9,22 +9,22 @@ const prefixes = {
   unchanged: '  ',
 };
 
-const stringify = (value, nestingDepth) => {
+const stringify = (value, depth) => {
   if (!_.isPlainObject(value)) {
     return value.toString();
   }
   const keys = Object.keys(value);
-  const closingQuoteStr = `${' '.repeat(nestingDepth * nestedOffset)}}`;
-  const nestedOffsetStr = ' '.repeat((nestingDepth + 1) * nestedOffset - prefixLength);
-  const props = keys.map((key) => `${prefixes.unchanged}${key}: ${stringify(value[key], nestingDepth + 1)}`);
+  const closingQuoteStr = `${' '.repeat(depth * nestedOffset)}}`;
+  const nestedOffsetStr = ' '.repeat((depth + 1) * nestedOffset - prefixLength);
+  const props = keys.map((key) => `${prefixes.unchanged}${key}: ${stringify(value[key], depth + 1)}`);
   const movedProps = props.map((str) => `${nestedOffsetStr}${str}`).join('\n');
   return ['{', movedProps, closingQuoteStr].join('\n');
 };
 
 
-const renderNodes = (nodes, nestingDepth) => {
-  const namesOffsetStr = ' '.repeat((nestingDepth + 1) * nestedOffset - prefixLength);
-  const closingQuoteStr = `${' '.repeat(nestingDepth * nestedOffset)}}`;
+const renderNodes = (nodes, depth) => {
+  const namesOffset = ' '.repeat((depth + 1) * nestedOffset - prefixLength);
+  const indentedClosingQuote = `${' '.repeat(depth * nestedOffset)}}`;
   const renderedNodes = nodes.map((node) => {
     const { name, type } = node;
     switch (type) {
@@ -32,19 +32,19 @@ const renderNodes = (nodes, nestingDepth) => {
       case 'removed':
       case 'unchanged': {
         const { value } = node;
-        return `${namesOffsetStr}${prefixes[type]}${name}: ${stringify(value, nestingDepth + 1)}`;
+        return `${namesOffset}${prefixes[type]}${name}: ${stringify(value, depth + 1)}`;
       }
       case 'changed': {
         const { valueBefore, valueAfter } = node;
-        const strForRemoved = `${namesOffsetStr}${prefixes.removed}${name}: ${stringify(valueBefore, nestingDepth + 1)}`;
-        const strForAdded = `${namesOffsetStr}${prefixes.added}${name}: ${stringify(valueAfter, nestingDepth + 1)}`;
+        const strForRemoved = `${namesOffset}${prefixes.removed}${name}: ${stringify(valueBefore, depth + 1)}`;
+        const strForAdded = `${namesOffset}${prefixes.added}${name}: ${stringify(valueAfter, depth + 1)}`;
         return `${strForRemoved}\n${strForAdded}`;
       }
-      case 'complex': return `${namesOffsetStr}  ${name}: ${renderNodes(node.children, nestingDepth + 1)}`;
+      case 'complex': return `${namesOffset}  ${name}: ${renderNodes(node.children, depth + 1)}`;
       default: throw new Error(`Unexpected node type: ${node.type}`);
     }
   });
-  return ['{', ...renderedNodes, closingQuoteStr].join('\n');
+  return ['{', ...renderedNodes, indentedClosingQuote].join('\n');
 };
 
 export default (nodes) => renderNodes(nodes, 0);

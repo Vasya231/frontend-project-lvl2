@@ -3,15 +3,6 @@ import genDiff from '../src/index';
 
 const pathToFixture = (filename) => `${__dirname}/fixtures/${filename}`;
 
-const beforeYml = pathToFixture('before.yml');
-const afterYml = pathToFixture('after.yml');
-
-const beforeJson = pathToFixture('before.json');
-const afterJson = pathToFixture('after.json');
-
-const beforeIni = pathToFixture('before.ini');
-const afterIni = pathToFixture('after.ini');
-
 const expectedData = {};
 
 beforeAll(() => {
@@ -21,12 +12,13 @@ beforeAll(() => {
 });
 
 test.each([
-  ['plain'],
-  ['pretty'],
   ['json'],
-])('%s', (expectedFormat) => {
-  const expected = expectedData[expectedFormat];
-  expect(genDiff(beforeJson, afterJson, expectedFormat)).toEqual(expected);
-  expect(genDiff(beforeYml, afterYml, expectedFormat)).toEqual(expected);
-  expect(genDiff(beforeIni, afterIni, expectedFormat)).toEqual(expected);
+  ['yml'],
+  ['ini'],
+])('%s', (extension) => {
+  const before = pathToFixture(`before.${extension}`);
+  const after = pathToFixture(`after.${extension}`);
+  expect(genDiff(before, after, 'pretty')).toEqual(expectedData.pretty);
+  expect(genDiff(before, after, 'plain')).toEqual(expectedData.plain);
+  expect(genDiff(before, after, 'json')).toEqual(expectedData.json);
 });
